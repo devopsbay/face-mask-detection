@@ -5,3 +5,5 @@ The dataset used to train the model was downloaded from https://github.com/X-zha
 
 Training was done on @paperspace
 
+Model is based on Yolov3 - https://github.com/experiencor/keras-yolo3
+
