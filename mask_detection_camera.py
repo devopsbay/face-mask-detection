@@ -6,8 +6,8 @@ import argparse
 from inference import inference
 
 
-def detect_masks_video(video_path, conf_thresh, output_video_name):
-    cap = cv2.VideoCapture(video_path)
+def detect_masks_video(conf_thresh, output_video_name):
+    cap = cv2.VideoCapture(0)
     height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
     width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
     fps = 5
@@ -34,6 +34,7 @@ def detect_masks_video(video_path, conf_thresh, output_video_name):
             cv2.imshow('image', img_raw[:, :, ::-1])
             cv2.waitKey(1)
             inference_stamp = time.time()
+            # Double conversion required due to color issues
             img_raw = cv2.cvtColor(img_raw, cv2.COLOR_RGB2BGR)
             writer.write(img_raw)
             write_frame_stamp = time.time()
@@ -51,11 +52,9 @@ def detect_masks_video(video_path, conf_thresh, output_video_name):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Face Mask Detection")
-    parser.add_argument('--video-path', type=str, default='0', help='path to your video, `0` means to use camera.')
+    parser = argparse.ArgumentParser(description="Face Mask Detection From Camera")
+    parser.add_argument('--video-output-path', type=str, default='test_video1.mp4', help='output path for video')
+    parser.add_argument('--threshold', type=float, default=0.5, help='Detection Threshold')
     args = parser.parse_args()
 
-    video_path = args.video_path
-    if args.video_path == '0':
-        video_path = 0
-    detect_masks_video(video_path, output_video_name='test_video1.mp4', conf_thresh=0.5)
+    detect_masks_video(output_video_name=args.video_output_path, conf_thresh=args.threshold)

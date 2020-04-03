@@ -23,7 +23,7 @@ anchors = generate_anchors(feature_map_sizes, anchor_sizes, anchor_ratios)
 # so we expand dim for anchors to [1, anchor_num, 4]
 anchors_exp = np.expand_dims(anchors, axis=0)
 
-id2class = {0: 'Maska', 1: 'Brak Maski'}
+id2class = {0: 'Mask', 1: 'No Face Mask'}
 
 
 def inference(image,
@@ -81,8 +81,8 @@ def inference(image,
             else:
                 color = (255, 0, 0)
             cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
-            cv2.putText(image, "%s: %.2f" % (id2class[class_id], conf), (xmin + 2, ymin - 2),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, color)
+            cv2.putText(image, "%s: %.2f" % (id2class[class_id], conf), (xmin + 1, ymin - 1),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.4, color)
         output_info.append([class_id, conf, xmin, ymin, xmax, ymax])
 
     if show_result:
